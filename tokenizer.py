@@ -1,6 +1,7 @@
 import os
 import re
 from itertools import chain
+from typing import Iterator
 
 import joblib
 
@@ -77,9 +78,16 @@ class Tokenizer:
         _tokens = list(filter(None, tokens))
         return _tokens
 
-    def tokenize(self, text):
+    def tokenize(self, text: str) -> Iterator[str]:
         _text = self.split_dot(text)
         tokens = self.split_with_tokenizer(_text)
         tokens = self.concat(tokens)
         tokens = self.split_after_concatization(tokens)
         return tokens
+
+
+if __name__ == "__main__":
+    text = """Your text here"""
+    tokenizer = Tokenizer()
+    result = tokenizer.tokenize(text)
+    print(result)
