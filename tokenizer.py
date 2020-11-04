@@ -17,7 +17,11 @@ class Tokenizer:
 
     def split_dot(self, text: str) -> str:
         # TODO: Здесь нужно написать паттерн разделения точки от заглавных букв
-        _text =  # your code here
+        _text = re.sub(r'\.\s*([A-ZА-Я])', r'. \1', text)
+        _text = re.sub(r'([^:])\n+[\s\n]*', r'\1. ', _text)
+        _text = re.sub(r'\.\.', r'.', _text)
+        _text = re.sub(r':\s*\.', ':', _text)
+        print(_text, '\n')
         return _text
 
     def split_with_tokenizer(self, text):
@@ -28,13 +32,13 @@ class Tokenizer:
         prev_word_patterns = '|'.join(('з\.', 'двухф\.', 'отриц\.'))
         # TODO: здесь надо написать паттерны для предыдущего предложения
         concat_rules_prev = (
-            # your code here
+            [r'[\W]з\.$|^З\.$', r'\W+двухф\.$|^Двухф\.$', r'\W+отриц\.$|^Отриц\.$', r'\W+двухфаз\.$|^Двухфаз\.$']  # r'\W+%\.$|^%\.$', вместо % сокращенное слово
         )
 
         begin_exceptions = '|'.join(('Tbc', 'Твс', '[\-–]'))
         # TODO: здесь надо написать паттерны соединения последющего предложения
         concat_rules_post = (
-            # your code here
+            [r'^[а-я]', r'^Tbc', r'^Твс']
         )
         return concat_rules_prev, concat_rules_post
 
@@ -50,6 +54,7 @@ class Tokenizer:
 
                 for concat_rule in concat_rules_prev:
                     if re.search(concat_rule, _tokens[-1]):
+                        print('rule:', concat_rule, '\ntoken:', _tokens[-1], '\nadded token:', token[0], '\n')
                         _tokens[-1] += f" {token.pop(0)}"
                         is_concated = True
                         break
@@ -60,13 +65,12 @@ class Tokenizer:
                             _tokens[-1] += f" {token.pop(0)}"
                             break
             _tokens.extend(token)
-
         return _tokens
 
     def get_split_rules(self):
         # TODO: здесь нужно написать паттерны разделения предложений
         split_rules = (
-            # your code here
+            []
         )
         split_rules = '|'.join(split_rules)
         return split_rules
@@ -87,7 +91,22 @@ class Tokenizer:
 
 
 if __name__ == "__main__":
-    text = """Your text here"""
+    text = """Жалобы на
+-  давящие боли за грудиной при ходьбе на 100м, без иррадиации, купирующие нитратами от 0-2 доз/сутки
+- приступы сердцебиения с перебоями в работе сердца
+- Контроля АД на амбулаторном этапе нет
+- Общая слабость, повышенная утомляемость
+
+Счтает себя с апреля 2018г, когда впервые появились вышеуказанные жалобы. До этого к врачам не обращался. С клиникой нестабильной стенокардии обследован в Ульяновской обласной больнице. После выписке направлен на плановую КАГ.  
+Амбулаторно принимал мертенил,АСК,клопидогрель (Россия- 2 недели) , НГ
+
+ Перенесенные заболевания: Туберкулез:  нет.  Вирусный гепатит: нет. Венерические заболевания: нет.
+Условия жизни: удовлетворительно 
+Аллергологический анамнез: Аллергия нет
+Эпидемиологический анамнез: В контакте с инфекционным больным не был. Туберкулез, вирусный гепатит, венерические болезни отрицает.   Диарея: нет.
+Онкологический анамнез: Онкологические заболевания отрицает.
+Гемотрансфузионный анамнез: Гемотрасфузии отрицает.
+Наследственный анамнез: Наследственность не отягощена"""
     tokenizer = Tokenizer()
     result = tokenizer.tokenize(text)
     print(result)
