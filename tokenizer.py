@@ -17,7 +17,7 @@ class Tokenizer:
 
     def split_dot(self, text: str) -> str:
         # TODO: Здесь нужно написать паттерн разделения точки от заглавных букв
-        _text =  # your code here
+        _text = re.sub(r'([a-zA-Zа-яёА-ЯЁ])(\.)([A-ZА-ЯЁ])', r'\1. \3', text)
         return _text
 
     def split_with_tokenizer(self, text):
@@ -28,13 +28,13 @@ class Tokenizer:
         prev_word_patterns = '|'.join(('з\.', 'двухф\.', 'отриц\.'))
         # TODO: здесь надо написать паттерны для предыдущего предложения
         concat_rules_prev = (
-            # your code here
+            #Я не понял, что здесь нужно сделать
         )
 
         begin_exceptions = '|'.join(('Tbc', 'Твс', '[\-–]'))
         # TODO: здесь надо написать паттерны соединения последющего предложения
         concat_rules_post = (
-            # your code here
+            #Я не понял, что здесь нужно сделать
         )
         return concat_rules_prev, concat_rules_post
 
@@ -65,10 +65,8 @@ class Tokenizer:
 
     def get_split_rules(self):
         # TODO: здесь нужно написать паттерны разделения предложений
-        split_rules = (
-            # your code here
-        )
-        split_rules = '|'.join(split_rules)
+        split_rules = re.split(r'\.')
+        #split_rules = '|'.join(split_rules)
         return split_rules
 
     def split_after_concatization(self, tokens):
