@@ -17,7 +17,7 @@ class Tokenizer:
 
     def split_dot(self, text: str) -> str:
         # TODO: Здесь нужно написать паттерн разделения точки от заглавных букв
-        _text =  # your code here
+        _text = re.sub(r'([а-яёА-ЯЁa-zA-Z])(\.)([А-ЯЁA-Z])', r'\1. \3', text)
         return _text
 
     def split_with_tokenizer(self, text):
@@ -65,9 +65,7 @@ class Tokenizer:
 
     def get_split_rules(self):
         # TODO: здесь нужно написать паттерны разделения предложений
-        split_rules = (
-            # your code here
-        )
+        split_rules = re.split()
         split_rules = '|'.join(split_rules)
         return split_rules
 
